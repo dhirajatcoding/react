@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CareSync</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', sans-serif; background: #fff; color: #1a1a2e; }
+    a { text-decoration: none; }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      background: rgba(255,255,255,0.9);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid #f0f0f0;
+      z-index: 100; transition: box-shadow 0.2s;
+    }
+    nav.scrolled { box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+    .nav-inner { max-width: 900px; margin: 0 auto; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; }
+    .logo { display: flex; align-items: center; gap: 8px; }
+    .logo-heart { color: #e05c5c; font-size: 18px; }
+    .logo-text  { font-size: 18px; font-weight: 700; color: #1a1a2e; }
+    .nav-right  { display: flex; align-items: center; gap: 10px; }
+    .btn-signin {
+      background: none; border: none;
+      color: #6b7280; font-size: 14px; font-weight: 500;
+      padding: 8px 14px; cursor: pointer;
+    }
+    .btn-getstarted {
+      background: #1a1a2e; border: none;
+      color: #fff; padding: 9px 18px;
+      border-radius: 8px; font-size: 13px;
+      font-weight: 600; cursor: pointer;
+    }
+
+    .hero { max-width: 620px; margin: 0 auto; padding: 130px 24px 64px; text-align: center; }
+    .badge { display: inline-block; background: #fff3f3; color: #e05c5c; border: 1px solid #fecaca; font-size: 13px; font-weight: 600; padding: 6px 14px; border-radius: 100px; margin-bottom: 24px; }
+    .hero h1 { font-size: clamp(34px, 6vw, 58px); font-weight: 800; line-height: 1.1; letter-spacing: -1.5px; margin-bottom: 20px; }
+    .hero h1 .accent { color: #e05c5c; }
+    .hero p  { font-size: 16px; color: #6b7280; line-height: 1.7; max-width: 480px; margin: 0 auto 32px; }
+    .actions { display: flex; gap: 12px; justify-content: center; margin-bottom: 48px; }
+    .btn-primary {
+      background: #1a1a2e; border: none; color: #fff;
+      padding: 13px 26px; border-radius: 9px;
+      font-size: 14px; font-weight: 700; cursor: pointer;
+    }
+    .btn-secondary {
+      background: none; border: 1.5px solid #e5e7eb;
+      color: #374151; padding: 13px 26px;
+      border-radius: 9px; font-size: 14px;
+      font-weight: 600; cursor: pointer;
+    }
+
+    .card { background: #fff; border: 1px solid #e5e7eb; border-radius: 14px; padding: 20px 22px; max-width: 380px; margin: 0 auto; box-shadow: 0 8px 32px rgba(0,0,0,0.08); text-align: left; }
+    .card-header { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; }
+    .green-dot   { width: 8px; height: 8px; border-radius: 50%; background: #10b981; display: inline-block; }
+    .card-title  { font-weight: 600; font-size: 14px; flex: 1; }
+    .card-date   { font-size: 12px; color: #9ca3af; }
+    .med-row  { display: flex; align-items: center; gap: 10px; background: #f9fafb; border-radius: 8px; padding: 10px 12px; margin-bottom: 8px; }
+    .med-info { flex: 1; }
+    .med-name { font-size: 13px; font-weight: 600; }
+    .med-time { font-size: 11px; color: #9ca3af; margin-top: 2px; }
+    .tag-taken   { font-size: 11px; font-weight: 600; color: #10b981; background: #f0fdf4; padding: 3px 8px; border-radius: 100px; }
+    .tag-pending { font-size: 11px; font-weight: 600; color: #f59e0b; background: #fffbeb; padding: 3px 8px; border-radius: 100px; }
+    .sos-row  { display: flex; align-items: center; gap: 8px; background: #fff0f0; border-radius: 8px; padding: 10px 12px; margin-top: 4px; }
+    .sos-text { flex: 1; font-size: 13px; color: #374151; }
+    .sos-tag  { font-size: 11px; font-weight: 600; color: #e05c5c; background: #fecaca; padding: 3px 8px; border-radius: 100px; }
+
+    footer { display: flex; justify-content: space-between; align-items: center; padding: 20px 32px; border-top: 1px solid #f0f0f0; margin-top: 64px; }
+    .footer-copy { font-size: 12px; color: #9ca3af; }
+  </style>
+</head>
+<body>
+
+  <!-- This div wraps ALL homepage content -->
+  <!-- It will be hidden when user is on /auth or /dashboard routes -->
+  <div id="homepage">
+    <nav id="navbar">
+      <div class="nav-inner">
+        <div class="logo">
+          <span class="logo-heart">♥</span>
+          <span class="logo-text">CareSync</span>
+        </div>
+        <div class="nav-right">
+          <button class="btn-signin"     onclick="goToAuth()">Sign In</button>
+          <button class="btn-getstarted" onclick="goToAuth()">Get Started</button>
+        </div>
+      </div>
+    </nav>
+
+    <section class="hero">
+      <div class="badge">🏥 Built for families who care</div>
+      <h1>Elder care,<br /><span class="accent">finally organized.</span></h1>
+      <p>CareSync brings medicines, appointments, tasks, and emergency alerts into one calm, simple platform — for seniors and the people who love them.</p>
+      <div class="actions">
+        <button class="btn-primary"   onclick="goToAuth()">Start for free →</button>
+        <button class="btn-secondary" onclick="goToAuth()">Sign in</button>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="green-dot"></span>
+          <span class="card-title">Today's Summary</span>
+          <span class="card-date" id="today-date"></span>
+        </div>
+        <div class="med-row">
+          <span>💊</span>
+          <div class="med-info"><div class="med-name">Morning Aspirin</div><div class="med-time">8:00 AM</div></div>
+          <span class="tag-taken">✓ Taken</span>
+        </div>
+        <div class="med-row">
+          <span>💊</span>
+          <div class="med-info"><div class="med-name">Metformin 500mg</div><div class="med-time">2:00 PM</div></div>
+          <span class="tag-pending">Pending</span>
+        </div>
+        <div class="sos-row">
+          <span>🆘</span>
+          <span class="sos-text">Emergency SOS — one tap away</span>
+          <span class="sos-tag">Always active</span>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="logo">
+        <span class="logo-heart">♥</span>
+        <span class="logo-text" style="color:#9ca3af;">CareSync</span>
+      </div>
+      <span class="footer-copy">© 2025 CareSync. Built with care.</span>
+    </footer>
+  </div>
+
+  <!-- React mounts here — fills the screen on /auth and /dashboard routes -->
+  <div id="root"></div>
+
+  <script>
+    function goToAuth() {
+      window.location.href = '/auth';
+    }
+
+    document.getElementById('today-date').textContent = new Date().toLocaleDateString('en-US', {
+      month: 'short', day: 'numeric'
+    });
+
+    window.addEventListener('scroll', () => {
+      document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 40);
+    });
+
+    // KEY FIX:
+    // If the URL is NOT the homepage (/), hide the homepage HTML
+    // and let React take over the full screen
+    const path = window.location.pathname;
+    if (path !== '/') {
+      const homepage = document.getElementById('homepage');
+      homepage.style.display = 'none';
+
+      // Make root fill the full screen
+      const root = document.getElementById('root');
+      root.style.minHeight = '100vh';
+    }
+  </script>
+
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+</html>
