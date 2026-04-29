@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema({
 
   email: {
     type: String,
-    required: true,
+    required:true,
     unique: true,
   },
 
@@ -26,8 +26,6 @@ const userSchema = new mongoose.Schema({
     required: true,
   },
 
-  // Only seniors have this field
-  // It stores the _id of the caregiver they are linked to
   caregiverId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
